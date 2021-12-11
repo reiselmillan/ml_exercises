@@ -42,6 +42,7 @@ class Perceptron(object):
         """
 
         self.w_ = np.zeros(1 + X.shape[1])
+        print(self.w_)
         self.errors_ = []
 
         for _ in range(self.n_iter):
@@ -62,4 +63,24 @@ class Perceptron(object):
         """Returns class label after unit step"""
         return np.where(self.net_input(X) >= 0.0, 1, -1)
 
-#print(help(Perceptron))
+import pandas as pd
+
+df = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data', header=None)
+
+print(df.head())
+
+import matplotlib.pyplot as plt
+import numpy as np
+y = df.iloc[:100, 4].values
+y = np.where(y== 'Iris-setosa', -1, 1)
+X = df.iloc[:100, [0,2]].values
+
+
+ppn = Perceptron(eta=0.1, n_iter=10)
+ppn.fit(X,y)
+plt.plot(range(1, len(ppn.errors_) + 1), ppn.errors_, marker='o')
+plt.xlabel('Epochs')
+plt.ylabel('NUmber of misclasifications')
+plt.show()
+
+
